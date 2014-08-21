@@ -10,7 +10,7 @@ Editing a colour palette mid-project is less of a chore, and it's particularly h
 Each colour is a single pixel in the .gif.
 
 
-
+<br>
 Load a palette:
 
    loadPalette("img/palette1.gif");
