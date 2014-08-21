@@ -13,6 +13,7 @@ col = [];
 // FUNCTION //
 function loadPalette(imgPath,callback,loadNotSet) {
 	
+	var loadNotSet = loadNotSet || false;
 	
 	var loader = new PxLoader(); //// Use PX Loader to handle image load
 	var palette = loader.addImage(imgPath);
@@ -31,7 +32,7 @@ function loadPalette(imgPath,callback,loadNotSet) {
 		
 		palettes.push(thisPalette); //// Add this palette to an array containing all palletes
 		
-		if (!loadNotSet) { //// Make this the current palette immediately
+		if (loadNotSet==false) { //// Make this the current palette immediately
 			col = palettes[0];
 		}
 		
