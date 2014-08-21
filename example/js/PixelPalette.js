@@ -64,10 +64,13 @@ palettes = [];
 col = [];
 
 // FUNCTION //
+// INIT //
+palettes = [];
+col = [];
+
+// FUNCTION //
 function loadPalette(imgPath,callback,loadNotSet) {
 	
-	var callback = callback || false;
-	var loadNotSet = loadNotSet || false;
 	
 	var loader = new PxLoader(); //// Use PX Loader to handle image load
 	var palette = loader.addImage(imgPath);
@@ -86,14 +89,14 @@ function loadPalette(imgPath,callback,loadNotSet) {
 		
 		palettes.push(thisPalette); //// Add this palette to an array containing all palletes
 		
-		if (loadNotSet==false) { //// Make this the current palette immediately
+		if (!loadNotSet) { //// Make this the current palette immediately
 			col = palettes[0];
 		}
 		
-		if (callback!==false) { //// Finished loading the pallete, run the callback if there is one
+		if (callback) { //// Finished loading the pallete, run the callback if there is one
 		    callback(); 
 		}
-	});
+	}); 
 	
 	loader.start(); //// begin downloading image
 }
