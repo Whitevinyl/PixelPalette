@@ -8,8 +8,6 @@ var FPS = 1;
 var scene = 0;
 
 
-palettes = [];
-col = [];
 var bgCol = 0;
 
 
@@ -21,10 +19,6 @@ var fullY = 0;
 var units = 0;
 var dx = 0;
 var dy = 0;
-
-
-
-
 
 
 //-------------------------------------------------------------------------------------------
@@ -41,9 +35,8 @@ function init() {
 	
 	
 	// LOAD OUR PALETTE //
-	loadPalette("palette1.gif");
+	loadPalette("/img/palette1.gif",paletteLoaded);
 }
-
 
 
 //-------------------------------------------------------------------------------------------
@@ -62,56 +55,53 @@ setInterval(function() {
 }, Math.round(1000/FPS));
 
 
-
-
 //-------------------------------------------------------------------------------------------
 //  PALETTE LOADER
 //-------------------------------------------------------------------------------------------
 
+// INIT //
+palettes = [];
+col = [];
 
-function loadPalette(imgPath,loadNotSet) {
+// FUNCTION //
+function loadPalette(imgPath,callback,loadNotSet) {
 	
+	var callback = callback || false;
 	var loadNotSet = loadNotSet || false;
 	
-	
-	// Use PX Loader to handle image load
-	var loader = new PxLoader();
+	var loader = new PxLoader(); //// Use PX Loader to handle image load
 	var palette = loader.addImage(imgPath);
 	
-	// callback that will be run once image is ready 
-	loader.addCompletionListener(function() { 
+	loader.addCompletionListener(function() { //// callback that will be run once image is ready 
 	
-	    //get number of colours
-	    var len = palette.width;
-		//temporarilly place image
-		context.drawImage(palette,0,0,len,1);
-		// get the image data
-		var imgd = context.getImageData(0,0,len,1);
+	    var len = palette.width; //// get number of colours
+		context.drawImage(palette,0,0,len,1); //// temporarilly place image
+		var imgd = context.getImageData(0,0,len,1); //// get the image data
 		var pal = imgd.data;
 		
-		// Loop over each pixel and add the color to an array.
-		var thisPalette = [];
+		var thisPalette = []; //// Loop over each pixel and add the color to an array.
 		for (var i = 0; i < (len*4); i += 4) {
 			thisPalette[i/4] = "rgba("+pal[i]+", "+pal[i+1]+", "+pal[i+2]+", 1)";
 		}
-		// Add this palette to an array containing all palletes
-		palettes.push(thisPalette);
 		
-		//Make this the current palette immediately
-		if (loadNotSet==false) {
+		palettes.push(thisPalette); //// Add this palette to an array containing all palletes
+		
+		if (loadNotSet==false) { //// Make this the current palette immediately
 			col = palettes[0];
 		}
 		
-		
-		// FINISHED LOADING PALETTE CODE HERE
-		scene = 1; 
-		
-	}); 
+		if (callback!==false) { //// Finished loading the pallete, run the callback if there is one
+		    callback(); 
+		}
+	});
 	
-	// begin downloading image 
-	loader.start(); 
+	loader.start(); //// begin downloading image
 }
 
+// OUR CALLBACK FUNCTION (advances scene to start drawing)
+function paletteLoaded() {
+	scene = 1;
+}
 
 
 //-------------------------------------------------------------------------------------------
@@ -165,7 +155,7 @@ function drawScene() {
 //-------------------------------------------------------------------------------------------
 
 
-
+    // this is just to scale the drawing //
 function resize_canvas() {
 	
 	canvasA.width  = window.innerWidth;
