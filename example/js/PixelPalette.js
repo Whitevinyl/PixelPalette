@@ -35,7 +35,7 @@ function init() {
 	
 	
 	// LOAD OUR PALETTE //
-	loadPalette("/img/palette1.gif",paletteLoaded);
+	loadPalette("img/palette1.gif",paletteLoaded);
 }
 
 
