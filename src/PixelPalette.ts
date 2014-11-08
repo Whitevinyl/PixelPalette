@@ -1,4 +1,4 @@
-module PixelPalette {
+export module PixelPalette {
 
     export class Loader {
         constructor() {

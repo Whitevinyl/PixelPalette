@@ -1,4 +1,4 @@
-declare module PixelPalette {
+export declare module PixelPalette {
     class Loader {
         constructor();
         Load(): void;
