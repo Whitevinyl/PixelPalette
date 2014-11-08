@@ -17,13 +17,14 @@
       "url": "https://github.com/Whitevinyl/PixelPalette/blob/master/LICENSE"
     }
   ],
-  "dependencies": {
+  "devDependencies": {
+    "event-stream": "^3.1.7",
     "gulp": "^3.8.7",
     "gulp-insert": "^0.4.0",
     "gulp-rename": "^1.2.0",
     "gulp-uglify": "^0.3.1",
     "nodeunit": "^0.9.0",
-    "gulp-typescript-compiler": "*",
+    "gulp-typescript": "^2.2.1",
     "gulp-browserify": "*",
     "deamdify": "*"
   }
