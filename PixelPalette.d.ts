@@ -1,9 +1,10 @@
-export declare module PixelPalette {
-    class Loader {
-        constructor();
-        Load(): void;
-    }
+declare class PixelPalette {
+    private context;
+    private imgPath;
+    constructor(context: CanvasRenderingContext2D, imgPath: string);
+    Load(callback: (palette: string[]) => void): void;
 }
+export = PixelPalette;
 
 
 //# sourceMappingURL=./PixelPalette.d.ts.map

@@ -1,21 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="initial-scale=1, user-scalable=no">
-
-<title>Pixel Palette</title>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <metaname="robots" content="noodp,noydir" />
-
-
-<script type="text/javascript" src="js/PixelPalette.js"></script>
-<script type="text/javascript" src="js/PxLoader.js"></script>
-<script type="text/javascript" src="js/PxLoaderImage.js"></script>
-<link href="paletteStyle.css" rel="stylesheet" type="text/css" />
-
-
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="initial-scale=1, user-scalable=no">
+    <title>Pixel Palette</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="paletteStyle.css" rel="stylesheet" type="text/css" />
 </head>
 <body bgcolor="#242b2b" onload="init()" onresize="resize_canvas()">
 
@@ -23,6 +13,19 @@
     <canvas id="canvas" class="unselectable"></canvas>
 
 
+    <script type="text/javascript" src="../PixelPalette.browser.js"></script>
+
+    <script type="text/javascript">
+        function init() {
+            var canvas = document.getElementById("canvas");
+            var context = canvas.getContext("2d");
+            var pixelPalette = new PixelPalette(context, "img/palette1.gif");
+
+            pixelPalette.Load(function() {
+                console.log("palette loaded");
+            });
+        }
+    </script>
 
 </body>
 </html>
