@@ -1,0 +1,9 @@
+{
+  "version": 3,
+  "file": "PixelPalette.d.ts",
+  "sources": [
+    "src/Loader.d.ts"
+  ],
+  "names": [],
+  "mappings": "AAAA;AACA;AACA;AACA;AACA;AACA;AACA"
+}

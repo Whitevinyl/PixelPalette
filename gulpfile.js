@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var concat = require('gulp-concat-sourcemap');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var insert = require('gulp-insert');
@@ -11,15 +12,17 @@ var header = '// ' + metadata.name + ' v' + metadata.version + ' ' + metadata.ho
 
 
 gulp.task('build', function() {
-    var tsResult = gulp.src('src/*.ts')
+    var tsResult = gulp.src(['src/*.ts', '!src/*.d.ts'])
         .pipe(ts({
             declarationFiles: true,
-            noExternalResolve: true
+            noExternalResolve: true,
+            module: 'amd',
+            sortOutput: true
         }));
 
     return eventStream.merge(
-        tsResult.dts.pipe(gulp.dest('./')),
-        tsResult.js.pipe(gulp.dest('./'))
+        tsResult.dts.pipe(concat('./PixelPalette.d.ts')).pipe(gulp.dest('./')),
+        tsResult.js.pipe(concat('./PixelPalette.js')).pipe(gulp.dest('./'))
     );
 });
 

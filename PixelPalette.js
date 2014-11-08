@@ -1,9 +1,14 @@
-var PixelPalette = (function () {
-    function PixelPalette() {
-    }
-    PixelPalette.prototype.DoStuff = function () {
-        console.log("Yay, stuff!");
-    };
-    return PixelPalette;
-})();
-module.exports = PixelPalette;
+var PixelPalette;
+(function (PixelPalette) {
+    var Loader = (function () {
+        function Loader() {
+        }
+        Loader.prototype.Load = function () {
+            console.log("loading");
+        };
+        return Loader;
+    })();
+    PixelPalette.Loader = Loader;
+})(PixelPalette || (PixelPalette = {}));
+
+

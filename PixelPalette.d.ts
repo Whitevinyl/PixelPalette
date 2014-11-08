@@ -1,5 +1,9 @@
-declare class PixelPalette {
-    constructor();
-    DoStuff(): void;
+declare module PixelPalette {
+    class Loader {
+        constructor();
+        Load(): void;
+    }
 }
-export = PixelPalette;
+
+
+//# sourceMappingURL=./PixelPalette.d.ts.map

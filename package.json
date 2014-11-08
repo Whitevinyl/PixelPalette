@@ -26,6 +26,7 @@
     "nodeunit": "^0.9.0",
     "gulp-typescript": "^2.2.1",
     "gulp-browserify": "*",
-    "deamdify": "*"
+    "deamdify": "*",
+    "gulp-concat-sourcemap": "^1.3.1"
   }
 }
