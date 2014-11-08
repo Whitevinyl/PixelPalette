@@ -1,0 +1,30 @@
+{
+  "name": "PixelPalette",
+  "version": "0.1.0",
+  "description": "A simple way to import a .gif palette to use in your Javascript/Canvas/HTML5 projects.",
+  "main": "src/PixelPalette.ts",
+  "homepage": "https://github.com/Whitevinyl/PixelPalette",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Whitevinyl/PixelPalette.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Whitevinyl/PixelPalette/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/Whitevinyl/PixelPalette/blob/master/LICENSE"
+    }
+  ],
+  "dependencies": {
+    "gulp": "^3.8.7",
+    "gulp-insert": "^0.4.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^0.3.1",
+    "nodeunit": "^0.9.0",
+    "gulp-typescript-compiler": "*",
+    "gulp-browserify": "*",
+    "deamdify": "*"
+  }
+}
