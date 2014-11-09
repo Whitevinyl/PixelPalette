@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var concat = require('gulp-concat-sourcemap');
+var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var insert = require('gulp-insert');
@@ -7,10 +7,11 @@ var ts = require('gulp-typescript');
 var browserify = require('gulp-browserify');
 var eventStream = require('event-stream');
 var runSequence = require('run-sequence');
+var connect = require('gulp-connect');
 
 var metadata = require('./package');
 var header = '// ' + metadata.name + ' v' + metadata.version + ' ' + metadata.homepage + '\n';
-
+var dist = './dist';
 
 gulp.task('build', function() {
     var tsResult = gulp.src(['src/*.ts', '!src/*.d.ts'])
@@ -22,32 +23,40 @@ gulp.task('build', function() {
         }));
 
     return eventStream.merge(
-        tsResult.dts.pipe(concat('./PixelPalette.d.ts')).pipe(gulp.dest('./')),
-        tsResult.js.pipe(concat('./PixelPalette.js')).pipe(gulp.dest('./'))
+        tsResult.dts.pipe(gulp.dest(dist)),
+        tsResult.js.pipe(gulp.dest(dist))
     );
 });
 
 gulp.task('browserify', function (callback) {
-    return gulp.src(['./PixelPalette.js'])
+    return gulp.src(['./PixelPalette.js'], { cwd: dist })
         .pipe(browserify({
-            transform: ['deamdify']
+            transform: ['deamdify'],
+            standalone: 'PixelPalette'
         }))
-        .pipe(rename('PixelPalette.browser.js'))
-        .pipe(gulp.dest('./'));
+        .pipe(rename('PixelPalette.b.js'))
+        .pipe(gulp.dest(dist));
 });
 
 gulp.task('libs', function() {
-    gulp.src(['./lib/*.js', './PixelPalette.js']).pipe(concat('./PixelPalette.js')).pipe(gulp.dest('./'));
-    gulp.src(['./lib/*.js', './PixelPalette.browser.js']).pipe(concat('./PixelPalette.browser.js')).pipe(gulp.dest('./'));
+    gulp.src(['./lib/*.js', dist + '/PixelPalette.js']).pipe(concat('/PixelPalette.js')).pipe(gulp.dest(dist));
+    gulp.src(['./lib/*.js', dist + '/PixelPalette.b.js']).pipe(concat('/PixelPalette.b.js')).pipe(gulp.dest(dist));
 });
 
-// todo: rename files
 gulp.task('minify', function() {
-    return gulp.src(['./PixelPalette.js', './PixelPalette.browser.js'])
+    return gulp.src(['./PixelPalette.js', './PixelPalette.b.js'], { cwd: dist })
+        .pipe(rename(function (path) {
+            path.extname = ".min" + path.extname;
+        }))
         .pipe(uglify())
         .pipe(insert.prepend(header))
-        //.pipe(rename('PixelPalette.browser.js'))
-        .pipe(gulp.dest('./'));
+        .pipe(gulp.dest(dist));
+});
+
+gulp.task('serve', function() {
+    connect.server({
+        root: './'
+    });
 });
 
 gulp.task('default', function(callback) {

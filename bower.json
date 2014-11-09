@@ -2,16 +2,14 @@
 {
 	"name": "pixelpalette",
 	"description": "Imports a gif palette to use in javascript projects",
-	"main": [
-		"PixelPallete.js"
-	],
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/edsilv/PixelPalette.git"
 	},
 	"ignore": [
 		"src",
-		"examples",
+		"app",
+	  	"lib",
 		"gulpfile.js"
 	]
 }

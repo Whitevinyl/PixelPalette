@@ -431,7 +431,6 @@ if (!Array.isArray) {
 
 
 
-
 /*global PxLoader: true, define: true */ 
 
 // PxLoader plugin to load images
@@ -539,33 +538,32 @@ if (typeof define === 'function' && define.amd) {
         return PxLoaderImage;
     });
 }
-
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var PixelPalette = function () {
+define(["require", "exports"], function (require, exports) {
+    // note: if you want to make this an amd module, you have to export it.
+    // e.g. export module PixelPalette
+    var PixelPalette = (function () {
         function PixelPalette(context, imgPath) {
             this.context = context;
             this.imgPath = imgPath;
         }
         PixelPalette.prototype.Load = function (callback) {
             var _this = this;
-            var loader = new PxLoader();
+            var loader = new PxLoader(); //// Use PX Loader to handle image load
             var img = loader.addImage(this.imgPath);
             loader.addCompletionListener(function () {
-                var len = img.width;
-                _this.context.drawImage(img, 0, 0, len, 1);
-                var imgd = _this.context.getImageData(0, 0, len, 1);
+                var len = img.width; //// get number of colours
+                _this.context.drawImage(img, 0, 0, len, 1); //// temporarily place image
+                var imgd = _this.context.getImageData(0, 0, len, 1); //// get the image data
                 var pal = imgd.data;
-                var palette = [];
-                for (var i = 0; i < len * 4; i += 4) {
-                    palette[i / 4] = 'rgba(' + pal[i] + ', ' + pal[i + 1] + ', ' + pal[i + 2] + ', 1)';
+                var palette = []; //// Loop over each pixel and add the color to an array.
+                for (var i = 0; i < (len * 4); i += 4) {
+                    palette[i / 4] = "rgba(" + pal[i] + ", " + pal[i + 1] + ", " + pal[i + 2] + ", 1)";
                 }
                 callback(palette);
             });
-            loader.start();
+            loader.start(); //// begin downloading image
         };
         return PixelPalette;
-    }();
-module.exports = PixelPalette;
-},{}]},{},[1])
-
-//# sourceMappingURL=./PixelPalette.browser.js.map
+    })();
+    return PixelPalette;
+});

@@ -5,6 +5,3 @@ declare class PixelPalette {
     Load(callback: (palette: string[]) => void): void;
 }
 export = PixelPalette;
-
-
-//# sourceMappingURL=./PixelPalette.d.ts.map

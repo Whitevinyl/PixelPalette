@@ -17,7 +17,7 @@ class PixelPalette {
         loader.addCompletionListener(() => { //// callback that will be run once image is ready
 
             var len = img.width; //// get number of colours
-            this.context.drawImage(img, 0, 0, len, 1); //// temporarilly place image
+            this.context.drawImage(img, 0, 0, len, 1); //// temporarily place image
             var imgd = this.context.getImageData(0, 0, len, 1); //// get the image data
             var pal = imgd.data;
 
