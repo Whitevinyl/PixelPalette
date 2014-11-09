@@ -9,10 +9,14 @@ Each colour is a single pixel in the .gif. Currently it uses <a href="https://gi
 
 ###Load a palette:
 
-    var pixelPalette = new PixelPalette(context, "img/palette1.gif");
+    var myCanvas = document.getElementById("canvas");
+    var context = myCanvas.getContext("2d");
+
+    var pixelPalette = new PixelPalette(myCanvas, "img/palette1.gif");
 
     pixelPalette.Load(function(palette) {
-        // use palette
+        // palette is an array of rgba values, e.g.
+        // ["rgba(95, 39, 79, 1)", "rgba(223, 45, 79, 1)", "rgba(255, 157, 164, 1)", "rgba(69, 161, 147, 1)", "rgba(72, 193, 228, 1)", "rgba(255, 210, 102, 1)", "rgba(255, 255, 255, 1)"]
     });
 
 This example loads a 7 colour palette, draws them onscreen and cycles through them in the background colour:
