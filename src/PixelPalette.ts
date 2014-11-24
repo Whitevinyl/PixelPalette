@@ -6,7 +6,7 @@ declare var PxLoader;
 
 class PixelPalette {
 
-    constructor(private context: CanvasRenderingContext2D, private imgPath: string){
+    constructor(private imgPath: string){
 
     }
 
@@ -14,11 +14,14 @@ class PixelPalette {
         var loader = new PxLoader(); //// Use PX Loader to handle image load
         var img = loader.addImage(this.imgPath);
 
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+
         loader.addCompletionListener(() => { //// callback that will be run once image is ready
 
             var len = img.width; //// get number of colours
-            this.context.drawImage(img, 0, 0, len, 1); //// temporarily place image
-            var imgd = this.context.getImageData(0, 0, len, 1); //// get the image data
+            context.drawImage(img, 0, 0, len, 1); //// temporarily place image
+            var imgd = context.getImageData(0, 0, len, 1); //// get the image data
             var pal = imgd.data;
 
             var palette: string[] = []; //// Loop over each pixel and add the color to an array.

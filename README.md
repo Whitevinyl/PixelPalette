@@ -12,7 +12,7 @@ Each colour is a single pixel in the .gif. Currently it uses <a href="https://gi
     var myCanvas = document.getElementById("canvas");
     var context = myCanvas.getContext("2d");
 
-    var pixelPalette = new PixelPalette(myCanvas, "img/palette1.gif");
+    var pixelPalette = new PixelPalette("img/palette1.gif");
 
     pixelPalette.Load(function(palette) {
         // palette is an array of rgba values, e.g.
