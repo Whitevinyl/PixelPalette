@@ -9,9 +9,6 @@ Each colour is a single pixel in the .gif. Currently it uses <a href="https://gi
 
 ###Load a palette:
 
-    var myCanvas = document.getElementById("canvas");
-    var context = myCanvas.getContext("2d");
-
     var pixelPalette = new PixelPalette("img/palette1.gif");
 
     pixelPalette.Load(function(palette) {
