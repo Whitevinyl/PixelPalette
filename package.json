@@ -1,6 +1,6 @@
 {
   "name": "PixelPalette",
-  "version": "0.1.1",
+  "version": "0.1.9",
   "description": "Imports a gif palette to use in javascript projects.",
   "main": "src/PixelPalette.ts",
   "homepage": "https://github.com/Whitevinyl/PixelPalette",
