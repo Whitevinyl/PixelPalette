@@ -1,6 +1,7 @@
 var browserify = require('gulp-browserify'),
     concat = require('gulp-concat'),
     Config = require('./gulpfile.config'),
+    config = new Config(),
     connect = require('gulp-connect'),
     del = require('del'),
     eventStream = require('event-stream'),
@@ -12,8 +13,6 @@ var browserify = require('gulp-browserify'),
     tasks = requireDir('./tasks'),
     ts = require('gulp-typescript'),
     uglify = require('gulp-uglify');
-
-var config = new Config();
 
 gulp.task('build', function() {
     var tsResult = gulp.src(['src/*.ts', '!src/*.d.ts'])

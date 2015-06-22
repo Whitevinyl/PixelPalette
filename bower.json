@@ -1,6 +1,6 @@
 {
 	"name": "pixelpalette",
-	"version": "0.1.10",
+	"version": "0.1.11",
 	"description": "Imports a gif palette to use in javascript projects",
 	"repository": {
 		"type": "git",
