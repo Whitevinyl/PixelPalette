@@ -1,17 +1,20 @@
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
-var insert = require('gulp-insert');
-var ts = require('gulp-typescript');
-var browserify = require('gulp-browserify');
-var eventStream = require('event-stream');
-var runSequence = require('run-sequence');
-var connect = require('gulp-connect');
+var argv = require('yargs').argv,
+    browserify = require('gulp-browserify'),
+    bump = require('gulp-bump'),
+    concat = require('gulp-concat'),
+    Config = require('./gulpfile.config'),
+    connect = require('gulp-connect'),
+    del = require('del'),
+    eventStream = require('event-stream'),
+    exec = require('child_process').exec,
+    insert = require('gulp-insert'),
+    rename = require('gulp-rename'),
+    runSequence = require('run-sequence'),
+    ts = require('gulp-typescript'),
+    uglify = require('gulp-uglify'),
+    gulp = require('gulp');
 
-var metadata = require('./package');
-var header = '// ' + metadata.name + ' v' + metadata.version + ' ' + metadata.homepage + '\n';
-var dist = './dist';
+var config = new Config();
 
 gulp.task('build', function() {
     var tsResult = gulp.src(['src/*.ts', '!src/*.d.ts'])
@@ -23,34 +26,62 @@ gulp.task('build', function() {
         }));
 
     return eventStream.merge(
-        tsResult.dts.pipe(gulp.dest(dist)),
-        tsResult.js.pipe(gulp.dest(dist))
+        tsResult.dts.pipe(gulp.dest(config.dist)),
+        tsResult.js.pipe(gulp.dest(config.dist))
     );
 });
 
-gulp.task('browserify', function (callback) {
-    return gulp.src(['./PixelPalette.js'], { cwd: dist })
+gulp.task('browserify', function (cb) {
+    return gulp.src(['./*.js'], { cwd: config.dist })
         .pipe(browserify({
             transform: ['deamdify'],
-            standalone: 'PixelPalette'
+            standalone: config.standalone
         }))
-        .pipe(rename('PixelPalette.b.js'))
-        .pipe(gulp.dest(dist));
+        .pipe(rename(config.out))
+        .pipe(gulp.dest(config.dist));
+});
+
+gulp.task('bump', function(){
+    var bumpType = argv.type || 'patch'; // major.minor.patch
+
+    gulp.src(['./bower.json', './package.json'])
+        .pipe(bump({type: bumpType}))
+        .pipe(gulp.dest('./'));
+});
+
+// requires global gulp-cli
+gulp.task('bump:minor', function(cb){
+    exec('gulp bump --type minor', function (err, stdout, stderr) {
+        cb();
+    });
+});
+
+// requires global gulp-cli
+gulp.task('bump:major', function(cb){
+    exec('gulp bump --type major', function (err, stdout, stderr) {
+        cb();
+    });
+});
+
+gulp.task('clean:dist', function (cb) {
+    del([
+        config.dist + '/*'
+    ], cb);
 });
 
 gulp.task('libs', function() {
-    gulp.src(['./lib/*.js', dist + '/PixelPalette.js']).pipe(concat('/PixelPalette.js')).pipe(gulp.dest(dist));
-    gulp.src(['./lib/*.js', dist + '/PixelPalette.b.js']).pipe(concat('/PixelPalette.b.js')).pipe(gulp.dest(dist));
+    gulp.src(['./lib/*.js', config.dist + '/' + config.out]).pipe(concat('/PixelPalette.js')).pipe(gulp.dest(config.dist));
+    //gulp.src(['./lib/*.js', config.dist + '/PixelPalette.b.js']).pipe(concat('/PixelPalette.b.js')).pipe(gulp.dest(config.dist));
 });
 
 gulp.task('minify', function() {
-    return gulp.src(['./PixelPalette.js', './PixelPalette.b.js'], { cwd: dist })
+    return gulp.src([config.out], { cwd: config.dist })
         .pipe(rename(function (path) {
             path.extname = ".min" + path.extname;
         }))
         .pipe(uglify())
         .pipe(insert.prepend(header))
-        .pipe(gulp.dest(dist));
+        .pipe(gulp.dest(config.dist));
 });
 
 gulp.task('serve', function() {
@@ -59,6 +90,6 @@ gulp.task('serve', function() {
     });
 });
 
-gulp.task('default', function(callback) {
-    runSequence('build', 'browserify', 'libs', callback);
+gulp.task('default', function(cb) {
+    runSequence('clean:dist', 'build', 'bump', 'browserify', 'libs', cb);
 });
