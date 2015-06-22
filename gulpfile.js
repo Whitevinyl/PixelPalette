@@ -1,18 +1,17 @@
-var argv = require('yargs').argv,
-    browserify = require('gulp-browserify'),
-    bump = require('gulp-bump'),
+var browserify = require('gulp-browserify'),
     concat = require('gulp-concat'),
     Config = require('./gulpfile.config'),
     connect = require('gulp-connect'),
     del = require('del'),
     eventStream = require('event-stream'),
-    exec = require('child_process').exec,
+    gulp = require('gulp');
     insert = require('gulp-insert'),
     rename = require('gulp-rename'),
+    requireDir = require('require-dir'),
     runSequence = require('run-sequence'),
+    tasks = requireDir('./tasks'),
     ts = require('gulp-typescript'),
-    uglify = require('gulp-uglify'),
-    gulp = require('gulp');
+    uglify = require('gulp-uglify');
 
 var config = new Config();
 
@@ -39,28 +38,6 @@ gulp.task('browserify', function (cb) {
         }))
         .pipe(rename(config.out))
         .pipe(gulp.dest(config.dist));
-});
-
-gulp.task('bump', function(){
-    var bumpType = argv.type || 'patch'; // major.minor.patch
-
-    gulp.src(['./bower.json', './package.json'])
-        .pipe(bump({type: bumpType}))
-        .pipe(gulp.dest('./'));
-});
-
-// requires global gulp-cli
-gulp.task('bump:minor', function(cb){
-    exec('gulp bump --type minor', function (err, stdout, stderr) {
-        cb();
-    });
-});
-
-// requires global gulp-cli
-gulp.task('bump:major', function(cb){
-    exec('gulp bump --type major', function (err, stdout, stderr) {
-        cb();
-    });
 });
 
 gulp.task('clean:dist', function (cb) {
