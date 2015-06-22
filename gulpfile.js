@@ -45,9 +45,8 @@ gulp.task('clean:dist', function (cb) {
     ], cb);
 });
 
-gulp.task('libs', function() {
-    gulp.src(['./lib/*.js', config.dist + '/' + config.out]).pipe(concat('/PixelPalette.js')).pipe(gulp.dest(config.dist));
-    //gulp.src(['./lib/*.js', config.dist + '/PixelPalette.b.js']).pipe(concat('/PixelPalette.b.js')).pipe(gulp.dest(config.dist));
+gulp.task('concat', function() {
+    gulp.src(['./lib/*.js', config.dist + '/' + config.out]).pipe(concat(config.out)).pipe(gulp.dest(config.dist));
 });
 
 gulp.task('minify', function() {
@@ -56,7 +55,7 @@ gulp.task('minify', function() {
             path.extname = ".min" + path.extname;
         }))
         .pipe(uglify())
-        .pipe(insert.prepend(header))
+        .pipe(insert.prepend(config.header))
         .pipe(gulp.dest(config.dist));
 });
 
@@ -67,5 +66,5 @@ gulp.task('serve', function() {
 });
 
 gulp.task('default', function(cb) {
-    runSequence('clean:dist', 'build', 'bump', 'browserify', 'libs', cb);
+    runSequence('clean:dist', 'build', 'bump', 'browserify', 'concat', cb);
 });
