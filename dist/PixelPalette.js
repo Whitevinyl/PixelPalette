@@ -430,3 +430,140 @@ if (!Array.isArray) {
 
 
 
+
+/*global PxLoader: true, define: true */ 
+
+// PxLoader plugin to load images
+function PxLoaderImage(url, tags, priority) {
+    var self = this,
+        loader = null;
+
+    this.img = new Image();
+    this.tags = tags;
+    this.priority = priority;
+
+    var onReadyStateChange = function() {
+        if (self.img.readyState === 'complete') {
+            removeEventHandlers();
+            loader.onLoad(self);
+        }
+    };
+
+    var onLoad = function() {
+        removeEventHandlers();
+        loader.onLoad(self);
+    };
+
+    var onError = function() {
+        removeEventHandlers();
+        loader.onError(self);
+    };
+
+    var removeEventHandlers = function() {
+        self.unbind('load', onLoad);
+        self.unbind('readystatechange', onReadyStateChange);
+        self.unbind('error', onError);
+    };
+
+    this.start = function(pxLoader) {
+        // we need the loader ref so we can notify upon completion
+        loader = pxLoader;
+
+        // NOTE: Must add event listeners before the src is set. We
+        // also need to use the readystatechange because sometimes
+        // load doesn't fire when an image is in the cache.
+        self.bind('load', onLoad);
+        self.bind('readystatechange', onReadyStateChange);
+        self.bind('error', onError);
+
+        self.img.src = url;
+    };
+
+    // called by PxLoader to check status of image (fallback in case
+    // the event listeners are not triggered).
+    this.checkStatus = function() {
+        if (self.img.complete) {
+            removeEventHandlers();
+            loader.onLoad(self);
+        }
+    };
+
+    // called by PxLoader when it is no longer waiting
+    this.onTimeout = function() {
+        removeEventHandlers();
+        if (self.img.complete) {
+            loader.onLoad(self);
+        } else {
+            loader.onTimeout(self);
+        }
+    };
+
+    // returns a name for the resource that can be used in logging
+    this.getName = function() {
+        return url;
+    };
+
+    // cross-browser event binding
+    this.bind = function(eventName, eventHandler) {
+        if (self.img.addEventListener) {
+            self.img.addEventListener(eventName, eventHandler, false);
+        } else if (self.img.attachEvent) {
+            self.img.attachEvent('on' + eventName, eventHandler);
+        }
+    };
+
+    // cross-browser event un-binding
+    this.unbind = function(eventName, eventHandler) {
+        if (self.img.removeEventListener) {
+            self.img.removeEventListener(eventName, eventHandler, false);
+        } else if (self.img.detachEvent) {
+            self.img.detachEvent('on' + eventName, eventHandler);
+        }
+    };
+
+}
+
+// add a convenience method to PxLoader for adding an image
+PxLoader.prototype.addImage = function(url, tags, priority) {
+    var imageLoader = new PxLoaderImage(url, tags, priority);
+    this.add(imageLoader);
+
+    // return the img element to the caller
+    return imageLoader.img;
+};
+
+// AMD module support
+if (typeof define === 'function' && define.amd) {
+    define('PxLoaderImage', [], function() {
+        return PxLoaderImage;
+    });
+}
+!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.PixelPalette=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+var PixelPalette = function () {
+        function PixelPalette(imgPath) {
+            this.imgPath = imgPath;
+        }
+        PixelPalette.prototype.Load = function (callback) {
+            var loader = new PxLoader();
+            var img = loader.addImage(this.imgPath);
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            loader.addCompletionListener(function () {
+                var len = img.width;
+                context.drawImage(img, 0, 0, len, 1);
+                var imgd = context.getImageData(0, 0, len, 1);
+                var pal = imgd.data;
+                var palette = [];
+                for (var i = 0; i < len * 4; i += 4) {
+                    palette[i / 4] = 'rgba(' + pal[i] + ', ' + pal[i + 1] + ', ' + pal[i + 2] + ', 1)';
+                }
+                callback(palette);
+            });
+            loader.start();
+        };
+        return PixelPalette;
+    }();
+module.exports = PixelPalette;
+},{}]},{},[1])
+(1)
+});

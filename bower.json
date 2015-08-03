@@ -1,14 +1,15 @@
-
 {
-  "name": "pixel-palette",
-  "description": "Imports a gif palette to use in javascript projects",
-  "main": [
-    "js/pixelPallete.js",
-    "js/PxLoader.js",
-    "js/PxLoaderImage.js"
-  ],
-  "repository": {
-  "type": "git",
-  "url": "git://github.com/Whitevinyl/PixelPalette.git"
-  }
+	"name": "pixelpalette",
+	"version": "0.1.22",
+	"description": "Imports a gif palette to use in javascript projects",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/edsilv/PixelPalette.git"
+	},
+	"ignore": [
+		"src",
+		"app",
+		"lib",
+		"gulpfile.js"
+	]
 }
