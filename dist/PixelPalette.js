@@ -539,31 +539,16 @@ if (typeof define === 'function' && define.amd) {
     });
 }
 !function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.PixelPalette=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-var PixelPalette = function () {
-        function PixelPalette(imgPath) {
-            this.imgPath = imgPath;
+var RGBA = function () {
+        function RGBA(r, g, b, a) {
+            this.R = r;
+            this.G = g;
+            this.B = b;
+            this.A = a;
         }
-        PixelPalette.prototype.Load = function (callback) {
-            var loader = new PxLoader();
-            var img = loader.addImage(this.imgPath);
-            var canvas = document.createElement('canvas');
-            var context = canvas.getContext('2d');
-            loader.addCompletionListener(function () {
-                var len = img.width;
-                context.drawImage(img, 0, 0, len, 1);
-                var imgd = context.getImageData(0, 0, len, 1);
-                var pal = imgd.data;
-                var palette = [];
-                for (var i = 0; i < len * 4; i += 4) {
-                    palette[i / 4] = 'rgba(' + pal[i] + ', ' + pal[i + 1] + ', ' + pal[i + 2] + ', 1)';
-                }
-                callback(palette);
-            });
-            loader.start();
-        };
-        return PixelPalette;
+        return RGBA;
     }();
-module.exports = PixelPalette;
+module.exports = RGBA;
 },{}]},{},[1])
 (1)
 });
