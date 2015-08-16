@@ -1,6 +1,6 @@
 {
   "name": "PixelPalette",
-  "version": "0.1.23",
+  "version": "0.1.25",
   "description": "Imports a gif palette to use in javascript projects.",
   "main": "src/PixelPalette.ts",
   "homepage": "https://github.com/Whitevinyl/PixelPalette",
@@ -30,6 +30,7 @@
     "gulp-rename": "^1.2.0",
     "gulp-typescript": "^2.2.1",
     "gulp-uglify": "^0.3.1",
+    "path": "^0.11.14",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.0.1",
     "yargs": "^3.12.0"
