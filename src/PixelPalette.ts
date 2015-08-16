@@ -12,11 +12,11 @@ function RGBA(r: number, g: number, b: number, a: number) {
 
     this.toString = () => {
         return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
-    }
+    };
 
     this.clone = () => {
-        return RGBA(this.R,this.G,this.B,this.A);
-    }
+        return new RGBA(r,g,b,a);
+    };
 }
 
 class PixelPalette {
