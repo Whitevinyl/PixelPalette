@@ -1,8 +1,18 @@
-
 declare var PxLoader;
 
 // note: if you want to make this an amd module, you have to export it.
 // e.g. export module PixelPalette
+
+function RGBA(r: number, g: number, b: number, a: number) {
+    this.R = r;
+    this.G = g;
+    this.B = b;
+    this.A = a;
+
+    this.toString = () => {
+        return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+    }
+}
 
 class PixelPalette {
 
@@ -10,27 +20,27 @@ class PixelPalette {
 
     }
 
-    public Load(callback: (palette: string[]) => void): void {
+    public Load(cb: (palette: any[]) => void): void {
         var loader = new PxLoader(); //// Use PX Loader to handle image load
         var img = loader.addImage(this.imgPath);
 
         var canvas = document.createElement('canvas');
         var context = canvas.getContext('2d');
 
-        loader.addCompletionListener(() => { //// callback that will be run once image is ready
+        loader.addCompletionListener(() => { //// cb that will be run once image is ready
 
             var len = img.width; //// get number of colours
             context.drawImage(img, 0, 0, len, 1); //// temporarily place image
             var imgd = context.getImageData(0, 0, len, 1); //// get the image data
             var pal = imgd.data;
 
-            var palette: string[] = []; //// Loop over each pixel and add the color to an array.
+            var palette: any[] = []; //// Loop over each pixel and add the color to an array.
 
             for (var i = 0; i < (len*4); i += 4) {
-                palette[i/4] = "rgba("+pal[i]+", "+pal[i+1]+", "+pal[i+2]+", 1)";
+                palette[i/4] = new RGBA(pal[i],pal[i+1],pal[i+2],pal[i+3]);
             }
 
-            callback(palette);
+            cb(palette);
         });
 
         loader.start(); //// begin downloading image

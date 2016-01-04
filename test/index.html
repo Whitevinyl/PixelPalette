@@ -11,7 +11,7 @@
 
     <canvas id="canvas" class="unselectable"></canvas>
 
-    <script type="text/javascript" src="../dist/PixelPalette.js"></script>
+    <script type="text/javascript" src="PixelPalette.js"></script>
 
     <script type="text/javascript">
 
@@ -64,13 +64,13 @@
             // Now we have the palette loaded, let's cycle through the colours in our background
 
             context.globalAlpha = 1;
-            context.fillStyle = palette[bgCol];
+            context.fillStyle = palette[bgCol].toString();
             context.fillRect(0,0,fullX,fullY);
 
             // cycle
             bgCol += 1;
 
-            if (bgCol == palette.length) {
+            if (bgCol === palette.length) {
                 bgCol = 0;
             }
         }
@@ -91,8 +91,8 @@
 
             // colours
             context.globalAlpha = 1;
-            for (i = 0; i < palette.length; i++) {
-                context.fillStyle = palette[i];
+            for (var i = 0; i < palette.length; i++) {
+                context.fillStyle = palette[i].toString();
                 context.fillRect(dx-((palette.length*0.5)*(thisSize*units))+(i*(thisSize*units)),dy-(0.5*(thisSize*units)),thisSize*units,thisSize*units);
             }
         }
