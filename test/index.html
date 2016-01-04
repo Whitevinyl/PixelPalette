@@ -64,7 +64,7 @@
             // Now we have the palette loaded, let's cycle through the colours in our background
 
             context.globalAlpha = 1;
-            context.fillStyle = palette[bgCol];
+            context.fillStyle = palette[bgCol].toString();
             context.fillRect(0,0,fullX,fullY);
 
             // cycle
@@ -92,7 +92,7 @@
             // colours
             context.globalAlpha = 1;
             for (var i = 0; i < palette.length; i++) {
-                context.fillStyle = palette[i];
+                context.fillStyle = palette[i].toString();
                 context.fillRect(dx-((palette.length*0.5)*(thisSize*units))+(i*(thisSize*units)),dy-(0.5*(thisSize*units)),thisSize*units,thisSize*units);
             }
         }

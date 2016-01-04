@@ -1,4 +1,3 @@
-//import RGBA = require("./RGBA");
 declare var PxLoader;
 
 // note: if you want to make this an amd module, you have to export it.
